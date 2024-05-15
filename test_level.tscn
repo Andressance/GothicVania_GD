@@ -1690,3 +1690,6 @@ position = Vector2(189, 55)
 
 [node name="Cliff2" parent="." instance=ExtResource("4_62kk0")]
 position = Vector2(45, 116)
+
+[node name="Cliff3" parent="." instance=ExtResource("4_62kk0")]
+position = Vector2(570, 100)

@@ -213,9 +213,5 @@ public partial class Ground : State
 		canAttack = true;
 	}
 
-    public void on_body_entered(Node body)
-    {
-        // Pass
-        GD.Print("Entered cliff");
-    }
+
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=188 format=3 uid="uid://bg36u85wh6uw8"]
+[gd_scene load_steps=197 format=3 uid="uid://bg36u85wh6uw8"]
 
 [ext_resource type="Script" path="res://scripts/character/character.cs" id="1_2ref0"]
 [ext_resource type="Texture2D" uid="uid://dxsbuuulad6vl" path="res://sprites/Adventurer-1.5/adventurer-v1.5-Sheet.png" id="1_ss1kd"]
@@ -378,6 +378,12 @@ animation = &"attack_2"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fuj5s"]
 animation = &"attack_3"
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bx35r"]
+animation = &"corner_climb"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1em1u"]
+animation = &"corner_grab"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ghyel"]
 animation = &"crouch"
 
@@ -411,9 +417,6 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_i4vgo"]
 switch_mode = 2
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ikgks"]
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_f5b6b"]
@@ -456,35 +459,56 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ury6i"]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_y5hl0"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_etn3n"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lre37"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gfu7y"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_y4hvt"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ikgks"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6m6x8"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yqfbg"]
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_dx8t8"]
-states/End/position = Vector2(1012, 168)
+states/End/position = Vector2(1104, 162)
 states/Movement/node = SubResource("AnimationNodeBlendSpace1D_s5ad8")
-states/Movement/position = Vector2(396, 162)
+states/Movement/position = Vector2(167, 162)
 states/Movement_sword/node = SubResource("AnimationNodeBlendSpace1D_3pbvt")
-states/Movement_sword/position = Vector2(396, 305)
-states/Start/position = Vector2(39, 162)
+states/Movement_sword/position = Vector2(167, 343)
+states/Start/position = Vector2(-39, 156)
 states/attack_1/node = SubResource("AnimationNodeAnimation_8bvlh")
 states/attack_1/position = Vector2(518, 409.381)
 states/attack_2/node = SubResource("AnimationNodeAnimation_qgd2x")
 states/attack_2/position = Vector2(710, 409.381)
 states/attack_3/node = SubResource("AnimationNodeAnimation_fuj5s")
 states/attack_3/position = Vector2(881, 409.381)
+states/corner_climb/node = SubResource("AnimationNodeAnimation_bx35r")
+states/corner_climb/position = Vector2(938.13, 112.25)
+states/corner_grab/node = SubResource("AnimationNodeAnimation_1em1u")
+states/corner_grab/position = Vector2(902.13, 14.2499)
 states/crouch/node = SubResource("AnimationNodeAnimation_ghyel")
-states/crouch/position = Vector2(760, 295.693)
+states/crouch/position = Vector2(933, 292.693)
 states/double_jump/node = SubResource("AnimationNodeAnimation_xfnnj")
-states/double_jump/position = Vector2(579, 75)
+states/double_jump/position = Vector2(194, -63)
 states/draw_sword/node = SubResource("AnimationNodeAnimation_y7amx")
-states/draw_sword/position = Vector2(253, 233.41)
+states/draw_sword/position = Vector2(24, 271.41)
 states/fold_sword/node = SubResource("AnimationNodeAnimation_f58th")
-states/fold_sword/position = Vector2(396, 224.48)
+states/fold_sword/position = Vector2(167, 262.48)
 states/jump_loop/node = SubResource("AnimationNodeAnimation_av8ys")
-states/jump_loop/position = Vector2(579, 155)
+states/jump_loop/position = Vector2(309, 58)
 states/jump_start/node = SubResource("AnimationNodeAnimation_oehp3")
-states/jump_start/position = Vector2(396, 75)
+states/jump_start/position = Vector2(60, 8)
 states/slide/node = SubResource("AnimationNodeAnimation_bsikg")
-states/slide/position = Vector2(767, 243.41)
-transitions = ["Movement", "jump_start", SubResource("AnimationNodeStateMachineTransition_4n102"), "jump_start", "jump_loop", SubResource("AnimationNodeStateMachineTransition_tcf02"), "jump_loop", "Movement", SubResource("AnimationNodeStateMachineTransition_1glp4"), "jump_start", "double_jump", SubResource("AnimationNodeStateMachineTransition_blha3"), "double_jump", "jump_loop", SubResource("AnimationNodeStateMachineTransition_i4vgo"), "Start", "Movement", SubResource("AnimationNodeStateMachineTransition_ikgks"), "Movement", "draw_sword", SubResource("AnimationNodeStateMachineTransition_f5b6b"), "draw_sword", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_1l7u0"), "Movement_sword", "fold_sword", SubResource("AnimationNodeStateMachineTransition_7f6qk"), "fold_sword", "Movement", SubResource("AnimationNodeStateMachineTransition_tvqpw"), "Movement", "slide", SubResource("AnimationNodeStateMachineTransition_gvjb3"), "Movement_sword", "slide", SubResource("AnimationNodeStateMachineTransition_4yoty"), "slide", "Movement", SubResource("AnimationNodeStateMachineTransition_80887"), "slide", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_w5aph"), "Movement", "crouch", SubResource("AnimationNodeStateMachineTransition_1futm"), "Movement_sword", "crouch", SubResource("AnimationNodeStateMachineTransition_gmm2y"), "crouch", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_kvcts"), "crouch", "Movement", SubResource("AnimationNodeStateMachineTransition_v3gxe"), "Movement_sword", "attack_1", SubResource("AnimationNodeStateMachineTransition_805d3"), "attack_1", "attack_2", SubResource("AnimationNodeStateMachineTransition_bs0bd"), "attack_2", "attack_3", SubResource("AnimationNodeStateMachineTransition_k0p8x"), "attack_1", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_j40t8"), "attack_2", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_sfgor"), "attack_3", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_ury6i")]
-graph_offset = Vector2(-91, 235.381)
+states/slide/position = Vector2(940, 240.41)
+transitions = ["Movement", "jump_start", SubResource("AnimationNodeStateMachineTransition_4n102"), "jump_start", "jump_loop", SubResource("AnimationNodeStateMachineTransition_tcf02"), "jump_loop", "Movement", SubResource("AnimationNodeStateMachineTransition_1glp4"), "jump_start", "double_jump", SubResource("AnimationNodeStateMachineTransition_blha3"), "double_jump", "jump_loop", SubResource("AnimationNodeStateMachineTransition_i4vgo"), "Movement", "draw_sword", SubResource("AnimationNodeStateMachineTransition_f5b6b"), "draw_sword", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_1l7u0"), "Movement_sword", "fold_sword", SubResource("AnimationNodeStateMachineTransition_7f6qk"), "fold_sword", "Movement", SubResource("AnimationNodeStateMachineTransition_tvqpw"), "Movement", "slide", SubResource("AnimationNodeStateMachineTransition_gvjb3"), "Movement_sword", "slide", SubResource("AnimationNodeStateMachineTransition_4yoty"), "slide", "Movement", SubResource("AnimationNodeStateMachineTransition_80887"), "slide", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_w5aph"), "Movement", "crouch", SubResource("AnimationNodeStateMachineTransition_1futm"), "Movement_sword", "crouch", SubResource("AnimationNodeStateMachineTransition_gmm2y"), "crouch", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_kvcts"), "crouch", "Movement", SubResource("AnimationNodeStateMachineTransition_v3gxe"), "Movement_sword", "attack_1", SubResource("AnimationNodeStateMachineTransition_805d3"), "attack_1", "attack_2", SubResource("AnimationNodeStateMachineTransition_bs0bd"), "attack_2", "attack_3", SubResource("AnimationNodeStateMachineTransition_k0p8x"), "attack_1", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_j40t8"), "attack_2", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_sfgor"), "attack_3", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_ury6i"), "Movement_sword", "jump_start", SubResource("AnimationNodeStateMachineTransition_y5hl0"), "Movement", "corner_grab", SubResource("AnimationNodeStateMachineTransition_etn3n"), "corner_grab", "Movement", SubResource("AnimationNodeStateMachineTransition_lre37"), "Movement_sword", "corner_grab", SubResource("AnimationNodeStateMachineTransition_gfu7y"), "corner_grab", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_y4hvt"), "Start", "Movement", SubResource("AnimationNodeStateMachineTransition_ikgks"), "corner_grab", "corner_climb", SubResource("AnimationNodeStateMachineTransition_6m6x8"), "corner_climb", "Movement", SubResource("AnimationNodeStateMachineTransition_yqfbg")]
+graph_offset = Vector2(-114.87, 2.52854)
 
 [sub_resource type="Animation" id="Animation_vper1"]
 resource_name = "attack_1"
@@ -863,7 +887,7 @@ position = Vector2(0, 3)
 shape = SubResource("CapsuleShape2D_o3q21")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("7_irik4")
+texture = ExtResource("3_y8wgw")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_dx8t8")
@@ -921,10 +945,11 @@ stateMachine = NodePath("../StateMachine")
 [node name="CliffClollision2D" type="Area2D" parent="."]
 
 [node name="cliff_collision" type="CollisionShape2D" parent="CliffClollision2D"]
-position = Vector2(10, -9)
+position = Vector2(10, -14)
 shape = SubResource("CircleShape2D_02ene")
 script = ExtResource("90_rbwpb")
 
 [connection signal="animation_finished" from="AnimationTree" to="StateMachine/Ground" method="_on_animation_tree_animation_finished"]
+[connection signal="animation_started" from="AnimationTree" to="StateMachine/Cliff_hanging" method="_on_animation_tree_animation_started"]
 [connection signal="area_entered" from="CliffClollision2D" to="StateMachine" method="_on_cliff_clollision_2d_area_entered"]
 [connection signal="area_exited" from="CliffClollision2D" to="StateMachine" method="_on_cliff_clollision_2d_area_exited"]

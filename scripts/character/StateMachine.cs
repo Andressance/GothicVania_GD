@@ -22,6 +22,8 @@ public partial class StateMachine : Node
 	[Export]
 	public State CliffState;
 
+	public bool isFacingRight;
+
 
 
 	private Array<State> states;
@@ -87,6 +89,8 @@ public partial class StateMachine : Node
 		}
 
 		currentState._Process(delta);
+
+
     }
 	
 	public void switch_states(State next_state)

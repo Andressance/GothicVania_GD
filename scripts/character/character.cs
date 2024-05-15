@@ -23,12 +23,15 @@ public partial class character : CharacterBody2D
 	
 	private StateMachine StateMachine;
 
+	private Area2D cliffCollisionShape;
+
 
 	public override void _Ready()
 	{
 		Sprite2D = GetNode<Sprite2D>("Sprite2D");
 		animationTree = GetNode<AnimationTree>("AnimationTree");
 		StateMachine = GetNode<StateMachine>("StateMachine");
+		cliffCollisionShape = GetNode<Area2D>("CliffClollision2D");
 		animationTree.Active = true;
 	}
 
@@ -72,8 +75,10 @@ public partial class character : CharacterBody2D
 	public void UpdateFacingAnimation() {
 		if (direction.X < 0) {
 			Sprite2D.FlipH = true;
+			cliffCollisionShape.Position = new Vector2(-20, 0);
 		} else if (direction.X > 0) {
 			Sprite2D.FlipH = false;
+			cliffCollisionShape.Position = new Vector2(0, 0);
 		}
 	
 	}
@@ -84,6 +89,8 @@ public partial class character : CharacterBody2D
 		animationTree.Set("parameters/Movement_sword/blend_position", direction.X);
 
     }
+
+
 
 	
 }
