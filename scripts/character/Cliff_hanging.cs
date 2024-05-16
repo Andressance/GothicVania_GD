@@ -39,9 +39,7 @@ public partial class Cliff_hanging : State
         if (@event.IsActionPressed("up"))
         {
             GD.Print("up");
-            playback.Travel("corner_climb");
-            tempAnim.Start();
-            
+            playback.Travel("corner_climb");            
 
         }
 
