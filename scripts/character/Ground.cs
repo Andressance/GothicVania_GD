@@ -52,8 +52,6 @@ public partial class Ground : State
 		between_attacks.OneShot = true;
 		between_attacks.Connect("timeout", new Callable(this, "CanAttack"));
 
-        this.cliffCollisionShape.Connect("area_entered", new Callable(this, "on_body_entered"));
-
         GD.Print(cliffCollisionShape);
 		
 

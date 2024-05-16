@@ -21,7 +21,6 @@ public partial class Air : State
 	public override void _Ready()
 	{
 		this.canMove = true;
-		this.cliffCollisionShape.Connect("area_entered", new Callable(this, "on_body_entered"));
 
 	}
 

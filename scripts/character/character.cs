@@ -25,6 +25,9 @@ public partial class character : CharacterBody2D
 
 	private Area2D cliffCollisionShape;
 
+	private Area2D attackCollisionShape;
+
+
 
 	public override void _Ready()
 	{
@@ -32,6 +35,7 @@ public partial class character : CharacterBody2D
 		animationTree = GetNode<AnimationTree>("AnimationTree");
 		StateMachine = GetNode<StateMachine>("StateMachine");
 		cliffCollisionShape = GetNode<Area2D>("CliffClollision2D");
+		attackCollisionShape = GetNode<Area2D>("AttackCollision2D");
 		animationTree.Active = true;
 	}
 
@@ -76,9 +80,11 @@ public partial class character : CharacterBody2D
 		if (direction.X < 0) {
 			Sprite2D.FlipH = true;
 			cliffCollisionShape.Position = new Vector2(-20, 0);
+			attackCollisionShape.Position = new Vector2(-25, 0);
 		} else if (direction.X > 0) {
 			Sprite2D.FlipH = false;
 			cliffCollisionShape.Position = new Vector2(0, 0);
+			attackCollisionShape.Position = new Vector2(0, 0);
 		}
 	
 	}
