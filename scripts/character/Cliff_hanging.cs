@@ -25,6 +25,8 @@ public partial class Cliff_hanging : State
 
     private Vector2 direction;
 
+    private bool isClimbing = false;
+
     private int animFrameCount = 0; // Contador para el número de ejecuciones del temporizador
 
     // Called when the node enters the scene tree for the first time.
@@ -42,45 +44,48 @@ public partial class Cliff_hanging : State
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
-        // Si el personaje está mirando a la derecha el movimiento será hacia la derecha
+        // Establecer la dirección del personaje independientemente de si está tratando de moverse horizontalmente
         direction = Input.GetVector("left", "right", "up", "down");
-
-        if (direction.X > 0)
+        // Establecer la dirección del personaje solo si no está en el proceso de trepar
+        if (!isClimbing)
         {
-            x_move = 10;
-            isFacingRight = false;
-        }
-        else if (direction.X < 0)
-        {
-            x_move = -10;
-            isFacingRight = true;
+            if (direction.X > 0)
+            {
+                x_move = 15;
+                isFacingRight = true;
+            }
+            else if (direction.X < 0)
+            {
+                x_move = -15;
+                isFacingRight = false;
+            }
         }
     }
+
 
     public override void state_input(InputEvent @event)
     {
         // Responder a los inputs solo si se puede mover
-        if (@event.IsActionPressed("up"))
+        if (@event.IsActionPressed("up") && !isClimbing && isHanging)
         {
-            if (isHanging)
-            {
-                playback.Travel(corner_climb);
-                animFrameCount = 0; // Reiniciar el contador de frames
-                tempAnim.Start(); // Iniciar el temporizador
-            }
+
+            playback.Travel(corner_climb);
+            animFrameCount = 0; // Reiniciar el contador de frames
+            tempAnim.Start(); // Iniciar el temporizador
+            isClimbing = true;
+
         }
 
         // Permitir al personaje soltarse del acantilado al presionar una tecla hacia abajo
-        if (@event.IsActionPressed("down"))
+        if (@event.IsActionPressed("down") && !isClimbing && isHanging)
+        {
+            next_state = ground_state;
+        }
+        if (@event.IsActionPressed("left") && isFacingRight && !isClimbing && isHanging)
         {
             next_state = air_state;
         }
-
-        if (@event.IsActionPressed("left") && isFacingRight)
-        {
-            next_state = air_state;
-        }
-        if (@event.IsActionPressed("right") && !isFacingRight)
+        if (@event.IsActionPressed("right") && !isFacingRight && !isClimbing && isHanging)
         {
             next_state = air_state;
         }
@@ -96,11 +101,6 @@ public partial class Cliff_hanging : State
         }
     }
 
-    // Método para permitir al personaje soltarse del acantilado
-    public void ReleaseFromCliff()
-    {
-        canMove = true; // Activar el movimiento al soltarse del acantilado
-    }
 
     public override void on_exit()
     {
@@ -113,11 +113,13 @@ public partial class Cliff_hanging : State
         {
             playback.Travel("jump_loop");
         }
+        isHanging = false;
+        isClimbing = false;
     }
 
     public void AnimationTimeout()
     {
-        character.Position = new Vector2(character.Position.X, character.Position.Y - 5);
+        character.Position = new Vector2(character.Position.X, character.Position.Y - 7);
 
         // Incrementar el contador de frames
         animFrameCount++;
@@ -133,7 +135,6 @@ public partial class Cliff_hanging : State
             tempAnim.Stop();
             animFrameCount = 0;
             next_state = ground_state;
-            isHanging = false;
             character.Position = new Vector2(character.Position.X + x_move, character.Position.Y);
 
         }

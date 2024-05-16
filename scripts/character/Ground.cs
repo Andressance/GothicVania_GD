@@ -64,6 +64,7 @@ public partial class Ground : State
         {
             next_state = air_state;
             playback.Travel(jump_loop);
+
         }
 
         if (character.IsOnFloor())
@@ -203,6 +204,21 @@ public partial class Ground : State
             {
                 playback.Travel("Movement");
             }
+        }
+    }
+
+    public void _on_cliff_clollision_2d_area_entered(Area2D area)
+	{
+		if (area.IsInGroup("cliff")) {
+            next_state = cliff_hanging;
+        }
+		
+	}
+
+	public void _on_cliff_clollision_2d_area_exited(Area2D area)
+	{
+		if (area.IsInGroup("cliff") && !character.IsOnFloor()) {
+            next_state = air_state;
         }
     }
 

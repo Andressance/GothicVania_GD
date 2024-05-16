@@ -1,9 +1,9 @@
 [gd_scene load_steps=8 format=3 uid="uid://d0u6npop2p8jj"]
 
 [ext_resource type="Texture2D" uid="uid://yx1qi5wotgvh" path="res://sprites/gothicvania_patreon_collection(1)/ gothicvania patreon collection/Gothic-Castle-Files/PNG/layers/gothic-castle-tileset.png" id="1_1lvrb"]
-[ext_resource type="PackedScene" uid="uid://bg36u85wh6uw8" path="res://character.tscn" id="1_hg6a8"]
+[ext_resource type="PackedScene" uid="uid://bg36u85wh6uw8" path="res://scenes/character.tscn" id="1_hg6a8"]
 [ext_resource type="Texture2D" uid="uid://dqac6ietspcwy" path="res://sprites/Legacy-Fantasy - High Forest 2.0/Legacy-Fantasy - High Forest 2.3/Assets/Tiles.png" id="2_fi4lq"]
-[ext_resource type="PackedScene" uid="uid://dw83cx0avaykk" path="res://cliff.tscn" id="4_62kk0"]
+[ext_resource type="PackedScene" uid="uid://dw83cx0avaykk" path="res://scenes/cliff.tscn" id="4_62kk0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i5akk"]
 texture = ExtResource("1_1lvrb")
@@ -1686,10 +1686,16 @@ drag_horizontal_enabled = true
 drag_vertical_enabled = true
 
 [node name="Cliff" parent="." instance=ExtResource("4_62kk0")]
-position = Vector2(189, 55)
+position = Vector2(570, 107)
 
 [node name="Cliff2" parent="." instance=ExtResource("4_62kk0")]
-position = Vector2(45, 116)
+position = Vector2(42, 120)
 
 [node name="Cliff3" parent="." instance=ExtResource("4_62kk0")]
-position = Vector2(570, 100)
+position = Vector2(443, 199)
+
+[node name="Cliff4" parent="." instance=ExtResource("4_62kk0")]
+position = Vector2(570, 216)
+
+[node name="Cliff5" parent="." instance=ExtResource("4_62kk0")]
+position = Vector2(699, 185)

@@ -7,6 +7,9 @@ public abstract partial class State : Node
 	[Export]
 	public bool canMove = true;
 
+	[Export]
+	public bool canTurn;
+
 	public CharacterBody2D character;
 
 	public State next_state;

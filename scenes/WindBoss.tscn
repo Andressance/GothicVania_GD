@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://c1ucpvyky3hkk"]
+
+[node name="WindBoss" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../AnimationTree")
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+
+[node name="HellHoundStateMachine" type="Node" parent="."]
+
+[node name="Idle" type="Node" parent="HellHoundStateMachine"]
+
+[node name="Walking" type="Node" parent="HellHoundStateMachine"]
+
+[node name="Running" type="Node" parent="HellHoundStateMachine"]
+
+[node name="Attacking" type="Node" parent="HellHoundStateMachine"]

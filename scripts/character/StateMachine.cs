@@ -22,7 +22,10 @@ public partial class StateMachine : Node
 	[Export]
 	public State CliffState;
 
+
 	public bool isFacingRight;
+
+	private AnimationNodeStateMachinePlayback playback;
 
 
 
@@ -51,6 +54,8 @@ public partial class StateMachine : Node
 		if (cliffCollisionShape == null) {
 			GD.PushWarning("Cliff Collision Shape is not set");
 		}
+
+		playback = (AnimationNodeStateMachinePlayback) animationTree.Get("parameters/playback");
 		
 		
 		// We set the character to the states
@@ -61,7 +66,7 @@ public partial class StateMachine : Node
 				
 				states.Add(GetChild<State>(i));
 				GetChild<State>(i).character = character;
-				GetChild<State>(i).playback = (AnimationNodeStateMachinePlayback) animationTree.Get("parameters/playback");
+				GetChild<State>(i).playback = playback;
 				GetChild<State>(i).animationPlayer = animationPlayer;
 				GetChild<State>(i).cliffCollisionShape = cliffCollisionShape;
 				GetChild<State>(i).SetCliffCollisionShape(cliffCollisionShape);
@@ -80,9 +85,17 @@ public partial class StateMachine : Node
 	{
 		return currentState.canMove;
 	}
+
+	public bool check_if_it_can_turn()
+	{
+		return currentState.canTurn;
+	}
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _PhysicsProcess(double delta)
     {
+		if (currentState == CliffState) {
+			playback.Travel("corner_grab");
+		}
 		
         if (currentState != null) {
 			switch_states(currentState.next_state);
@@ -111,19 +124,9 @@ public partial class StateMachine : Node
 		currentState.state_input(@event);
 	}
 
-	public void _on_cliff_clollision_2d_area_entered(Area2D area)
+	public void _on_animation_tree_animation_started(string anim_name)
 	{
-		if (area.IsInGroup("cliff") && currentState != CliffState){
-			switch_states(CliffState);
-			
-		}
-		
+		GD.Print(anim_name);
 	}
-
-	public void _on_cliff_clollision_2d_area_exited(Area2D area)
-	{
-		if (area.IsInGroup("cliff") && currentState == CliffState){
-			switch_states(CliffState.next_state);
-		}
-	}
+	
 }

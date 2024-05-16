@@ -31,6 +31,7 @@ public partial class Air : State
 		{
 			next_state = ground_state;
 		}
+		
 
 		
 	}
@@ -42,12 +43,21 @@ public partial class Air : State
 			doubleJump();
 		}
 	}
-
+	public override void on_enter() {
+		
+	}
 	public override void on_exit() {
+
 		if (next_state == ground_state) {
-			doubleJumped = false;
 			playback.Travel("Movement");
 		}
+		if (next_state == Cliff_hanging) {
+			playback.Stop();
+			playback.Travel("corner_grab");
+		}
+
+
+		doubleJumped = false;
 	}
 
 	public void doubleJump() {
@@ -61,11 +71,21 @@ public partial class Air : State
 		}
 	}
 
-	public void on_body_entered(Area2D area)
+	public void _on_cliff_clollision_2d_area_entered(Area2D area)
 	{
-		GD.Print("Entered cliff");
+		if (area.IsInGroup("cliff")) {
+            next_state = Cliff_hanging;
+        }
 		
 	}
 
-	
+	public void _on_cliff_clollision_2d_area_exited(Area2D area)
+	{
+		if (area.IsInGroup("cliff") && !character.IsOnFloor()) {
+			next_state = ground_state;
+		} else if (area.IsInGroup("cliff") && character.IsOnFloor()) {
+			next_state = ground_state;
+		}
+    }
+
 }

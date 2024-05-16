@@ -77,11 +77,11 @@ public partial class character : CharacterBody2D
 	}
 
 	public void UpdateFacingAnimation() {
-		if (direction.X < 0) {
+		if (direction.X < 0 && this.StateMachine.check_if_it_can_turn()) {
 			Sprite2D.FlipH = true;
 			cliffCollisionShape.Position = new Vector2(-20, 0);
-			attackCollisionShape.Position = new Vector2(-25, 0);
-		} else if (direction.X > 0) {
+			attackCollisionShape.Position = new Vector2(-30, 0);
+		} else if (direction.X > 0 && this.StateMachine.check_if_it_can_turn()) {
 			Sprite2D.FlipH = false;
 			cliffCollisionShape.Position = new Vector2(0, 0);
 			attackCollisionShape.Position = new Vector2(0, 0);
