@@ -1687,6 +1687,7 @@ drag_vertical_enabled = true
 
 [node name="Cliff" parent="." instance=ExtResource("4_62kk0")]
 position = Vector2(570, 107)
+scale = Vector2(0.98756, 1.00907)
 
 [node name="Cliff2" parent="." instance=ExtResource("4_62kk0")]
 position = Vector2(42, 120)

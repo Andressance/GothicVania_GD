@@ -93,9 +93,6 @@ public partial class StateMachine : Node
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _PhysicsProcess(double delta)
     {
-		if (currentState == CliffState) {
-			playback.Travel("corner_grab");
-		}
 		
         if (currentState != null) {
 			switch_states(currentState.next_state);
@@ -124,9 +121,5 @@ public partial class StateMachine : Node
 		currentState.state_input(@event);
 	}
 
-	public void _on_animation_tree_animation_started(string anim_name)
-	{
-		GD.Print(anim_name);
-	}
 	
 }

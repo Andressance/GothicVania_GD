@@ -23,20 +23,20 @@ public partial class Ground : State
     private string jump_loop;
     private bool jumping = false;
 
-    private bool isArmed = false;
 
     private int attack_count = 0;
 
     private Timer attackTimer;
-	private Timer between_attacks;
+    private Timer between_attacks;
     private float idleTimeout = 1.0f; // Tiempo en segundos antes de regresar a idle
     private int attackCount = 0;
-	private bool canAttack = true;
+    private bool canAttack = true;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         this.canMove = true;
+        isSliding = false;
 
         // Configuración del temporizador de ataque
         attackTimer = new Timer();
@@ -45,16 +45,12 @@ public partial class Ground : State
         attackTimer.OneShot = true;
         attackTimer.Connect("timeout", new Callable(this, "AttackTimerTimeout"));
 
-		// Iniciar el temporizador de ataque
-		between_attacks = new Timer();
-		AddChild(between_attacks);
-		between_attacks.WaitTime = 0.4f;
-		between_attacks.OneShot = true;
-		between_attacks.Connect("timeout", new Callable(this, "CanAttack"));
-
-        GD.Print(cliffCollisionShape);
-		
-
+        // Iniciar el temporizador de ataque
+        between_attacks = new Timer();
+        AddChild(between_attacks);
+        between_attacks.WaitTime = 0.4f;
+        between_attacks.OneShot = true;
+        between_attacks.Connect("timeout", new Callable(this, "CanAttack"));
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -64,7 +60,7 @@ public partial class Ground : State
         {
             next_state = air_state;
             playback.Travel(jump_loop);
-
+            
         }
 
         if (character.IsOnFloor())
@@ -75,7 +71,6 @@ public partial class Ground : State
 
     public override void state_input(InputEvent @event)
     {
-        
         if (@event.IsActionPressed("up"))
         {
             jump();
@@ -83,7 +78,6 @@ public partial class Ground : State
         }
         if (@event.IsActionPressed("attack"))
         {
-			
             attack();
         }
 
@@ -93,20 +87,34 @@ public partial class Ground : State
             playback.Travel("fold_sword");
         }
 
-        if (@event.IsActionPressed("shift") && character.IsOnFloor() && velocity.X != 0)
+        if (@event.IsActionPressed("shift") && character.IsOnFloor() && character.Velocity.X != 0)
         {
-
             playback.Travel("slide");
             isArmed = false;
             slide();
-
-
         }
+        
+        // Nueva lógica para volver al estado "Movement" si se pulsa la dirección contraria mientras se está deslizando
+        if (@event.IsActionPressed("left") && isSliding)
+        {
+            playback.Travel("Movement");
+            isArmed = false;
+            isSliding = false;
+            character.Velocity = 200.0f * Vector2.Left;
+        }
+        else if (@event.IsActionPressed("right") && character.IsOnFloor() && isSliding)
+        {
+            playback.Travel("Movement");
+            isArmed = false;
+            isSliding = false;
+            character.Velocity = 200.0f * Vector2.Right;
+        }
+
         // If its holded
         if (@event.IsActionPressed("down") && character.IsOnFloor())
         {
             playback.Travel("crouch");
-
+            canMove = false;
         }
         else if (@event.IsActionReleased("down"))
         {
@@ -118,6 +126,7 @@ public partial class Ground : State
             {
                 playback.Travel("Movement");
             }
+            canMove = true;
         }
     }
 
@@ -136,6 +145,8 @@ public partial class Ground : State
 
     public void attack()
     {
+        
+
         if (!isArmed)
         {
             isArmed = true;
@@ -143,59 +154,63 @@ public partial class Ground : State
         }
         else if (canAttack)
         {
+            // No te puedes mover mientras atacas
+            canMove = false;
+
             // Realizar lógica de ataque
             // Reiniciar el temporizador de ataque
             attackTimer.Stop();
             attackTimer.Start();
-
-			
 
             // Elegir la animación de ataque basada en el contador de ataques
             switch (attackCount)
             {
                 case 0:
                     playback.Travel("attack_1");
-					canAttack = false;
                     break;
                 case 1:
                     playback.Travel("attack_2");
-					canAttack = false;
                     break;
                 case 2:
                     playback.Travel("attack_3");
-					canAttack = false;
                     break;
             }
 
             // Incrementar el contador de ataques
             attackCount = (attackCount + 1) % 3; // Reinicia el contador si llega a 3
 
-			// Reiniciar el temporizador entre ataques
-			between_attacks.Stop();
-			between_attacks.Start();
+            // Reiniciar el temporizador entre ataques
+            between_attacks.Stop();
+            between_attacks.Start();
+            
+            canAttack = false; // Mover el estado canAttack después de iniciar el temporizador
         }
     }
 
     public void slide()
     {
-        var velocity = character.Velocity;
-        velocity.X += 300.0f;
-        character.Velocity = velocity;
+        isSliding = true;
     }
 
     public void AttackTimerTimeout()
     {
+        canMove = true;
         playback.Travel("Movement_sword");
+        canAttack = true;
+    }
+
+    public void CanAttack()
+    {
+        canAttack = true;
     }
 
     public void _on_animation_tree_animation_finished(string anim_name)
     {
         if (anim_name == "slide")
         {
-            var velocity = character.Velocity;
-            velocity.X = 0;
-            character.Velocity = velocity;
-
+            isSliding = false;
+            character.Velocity = Vector2.Zero;
+            
             if (isArmed)
             {
                 playback.Travel("Movement_sword");
@@ -208,24 +223,21 @@ public partial class Ground : State
     }
 
     public void _on_cliff_clollision_2d_area_entered(Area2D area)
-	{
-		if (area.IsInGroup("cliff")) {
+    {
+        if (area.IsInGroup("cliff")) {
             next_state = cliff_hanging;
-        }
-		
-	}
-
-	public void _on_cliff_clollision_2d_area_exited(Area2D area)
-	{
-		if (area.IsInGroup("cliff") && !character.IsOnFloor()) {
-            next_state = air_state;
         }
     }
 
-	public void CanAttack()
-	{
-		canAttack = true;
-	}
-
+    public void _on_cliff_clollision_2d_area_exited(Area2D area)
+    {
+        if (area.IsInGroup("cliff") && !character.IsOnFloor()) {
+            next_state = air_state;
+        }
+    }
+    public override void on_exit()
+    {
+        isSliding = false;
+    }
 
 }

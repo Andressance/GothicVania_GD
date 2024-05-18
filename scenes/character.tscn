@@ -85,10 +85,10 @@
 [ext_resource type="Texture2D" uid="uid://bv5uffkpknvtq" path="res://sprites/Adventurer-1.5/run3/adventurer-run3-04.png" id="82_0145a"]
 [ext_resource type="Texture2D" uid="uid://b5j7vwtv25ite" path="res://sprites/Adventurer-1.5/run3/adventurer-run3-05.png" id="83_lr35d"]
 [ext_resource type="Script" path="res://scripts/character/StateMachine.cs" id="85_w42o1"]
-[ext_resource type="Script" path="res://scripts/character/Ground.cs" id="86_at0xv"]
-[ext_resource type="Script" path="res://scripts/character/Air.cs" id="87_y0bqf"]
-[ext_resource type="Script" path="res://scripts/character/Landing.cs" id="88_ki1gr"]
-[ext_resource type="Script" path="res://scripts/character/Cliff_hanging.cs" id="89_h5pmb"]
+[ext_resource type="Script" path="res://scripts/character/States/Ground.cs" id="86_budxj"]
+[ext_resource type="Script" path="res://scripts/character/States/Air.cs" id="87_n2hfg"]
+[ext_resource type="Script" path="res://scripts/character/States/Landing.cs" id="88_u1lvh"]
+[ext_resource type="Script" path="res://scripts/character/States/Cliff_hanging.cs" id="89_ekjab"]
 [ext_resource type="Script" path="res://scripts/character/StateDebugLabel.cs" id="89_u70sy"]
 [ext_resource type="Script" path="res://scripts/character/HangingCliffCollision.cs" id="90_rbwpb"]
 
@@ -521,7 +521,7 @@ states/jump_start/position = Vector2(60, 8)
 states/slide/node = SubResource("AnimationNodeAnimation_bsikg")
 states/slide/position = Vector2(940, 240.41)
 transitions = ["Movement", "jump_start", SubResource("AnimationNodeStateMachineTransition_4n102"), "jump_start", "jump_loop", SubResource("AnimationNodeStateMachineTransition_tcf02"), "jump_loop", "Movement", SubResource("AnimationNodeStateMachineTransition_1glp4"), "jump_start", "double_jump", SubResource("AnimationNodeStateMachineTransition_blha3"), "double_jump", "jump_loop", SubResource("AnimationNodeStateMachineTransition_i4vgo"), "Movement", "draw_sword", SubResource("AnimationNodeStateMachineTransition_f5b6b"), "draw_sword", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_1l7u0"), "Movement_sword", "fold_sword", SubResource("AnimationNodeStateMachineTransition_7f6qk"), "fold_sword", "Movement", SubResource("AnimationNodeStateMachineTransition_tvqpw"), "Movement", "slide", SubResource("AnimationNodeStateMachineTransition_gvjb3"), "Movement_sword", "slide", SubResource("AnimationNodeStateMachineTransition_4yoty"), "slide", "Movement", SubResource("AnimationNodeStateMachineTransition_80887"), "slide", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_w5aph"), "Movement", "crouch", SubResource("AnimationNodeStateMachineTransition_1futm"), "Movement_sword", "crouch", SubResource("AnimationNodeStateMachineTransition_gmm2y"), "crouch", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_kvcts"), "crouch", "Movement", SubResource("AnimationNodeStateMachineTransition_v3gxe"), "Movement_sword", "attack_1", SubResource("AnimationNodeStateMachineTransition_805d3"), "attack_1", "attack_2", SubResource("AnimationNodeStateMachineTransition_bs0bd"), "attack_2", "attack_3", SubResource("AnimationNodeStateMachineTransition_k0p8x"), "attack_1", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_j40t8"), "attack_2", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_sfgor"), "attack_3", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_ury6i"), "Movement_sword", "jump_start", SubResource("AnimationNodeStateMachineTransition_y5hl0"), "Movement", "corner_grab", SubResource("AnimationNodeStateMachineTransition_etn3n"), "corner_grab", "Movement", SubResource("AnimationNodeStateMachineTransition_lre37"), "Movement_sword", "corner_grab", SubResource("AnimationNodeStateMachineTransition_gfu7y"), "corner_grab", "Movement_sword", SubResource("AnimationNodeStateMachineTransition_y4hvt"), "Start", "Movement", SubResource("AnimationNodeStateMachineTransition_ikgks"), "corner_grab", "climb", SubResource("AnimationNodeStateMachineTransition_6m6x8"), "climb", "Movement", SubResource("AnimationNodeStateMachineTransition_yqfbg"), "jump_loop", "corner_grab", SubResource("AnimationNodeStateMachineTransition_p17c2"), "jump_start", "corner_grab", SubResource("AnimationNodeStateMachineTransition_sdsqu"), "double_jump", "corner_grab", SubResource("AnimationNodeStateMachineTransition_araam"), "Movement", "jump_loop", SubResource("AnimationNodeStateMachineTransition_go2yv"), "Movement_sword", "jump_loop", SubResource("AnimationNodeStateMachineTransition_3tlrt"), "corner_grab", "jump_loop", SubResource("AnimationNodeStateMachineTransition_kgluw")]
-graph_offset = Vector2(-236.87, -66.7174)
+graph_offset = Vector2(-236.87, 238.397)
 
 [sub_resource type="Animation" id="Animation_vper1"]
 resource_name = "attack_1"
@@ -842,7 +842,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_mxeht"]
 resource_name = "slide"
-length = 0.6
+length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -915,7 +915,7 @@ position = Vector2(0, 3)
 shape = SubResource("CapsuleShape2D_o3q21")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("3_y8wgw")
+texture = ExtResource("4_ar3h2")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_dx8t8")
@@ -939,8 +939,7 @@ cliffCollisionShape = NodePath("../CliffClollision2D")
 CliffState = NodePath("Cliff_hanging")
 
 [node name="Ground" type="Node" parent="StateMachine" node_paths=PackedStringArray("air_state", "cliff_hanging")]
-script = ExtResource("86_at0xv")
-JumpVelocity = -250.0
+script = ExtResource("86_budxj")
 air_state = NodePath("../Air")
 cliff_hanging = NodePath("../Cliff_hanging")
 jump_animation = "jump_start"
@@ -948,7 +947,7 @@ jump_loop = "jump_loop"
 canTurn = true
 
 [node name="Air" type="Node" parent="StateMachine" node_paths=PackedStringArray("ground_state", "Cliff_hanging")]
-script = ExtResource("87_y0bqf")
+script = ExtResource("87_n2hfg")
 ground_state = NodePath("../Ground")
 Cliff_hanging = NodePath("../Cliff_hanging")
 DoubleJumpVelocity = -200.0
@@ -956,10 +955,10 @@ double_jump_animation = "double_jump"
 canTurn = true
 
 [node name="Landing" type="Node" parent="StateMachine"]
-script = ExtResource("88_ki1gr")
+script = ExtResource("88_u1lvh")
 
 [node name="Cliff_hanging" type="Node" parent="StateMachine" node_paths=PackedStringArray("air_state", "ground_state")]
-script = ExtResource("89_h5pmb")
+script = ExtResource("89_ekjab")
 air_state = NodePath("../Air")
 ground_state = NodePath("../Ground")
 corner_climb = "climb"
@@ -987,7 +986,6 @@ position = Vector2(14, 2.5)
 shape = SubResource("RectangleShape2D_w882b")
 
 [connection signal="animation_finished" from="AnimationTree" to="StateMachine/Ground" method="_on_animation_tree_animation_finished"]
-[connection signal="animation_started" from="AnimationTree" to="StateMachine" method="_on_animation_tree_animation_started"]
 [connection signal="area_entered" from="CliffClollision2D" to="StateMachine/Ground" method="_on_cliff_clollision_2d_area_entered"]
 [connection signal="area_entered" from="CliffClollision2D" to="StateMachine/Air" method="_on_cliff_clollision_2d_area_entered"]
 [connection signal="area_exited" from="CliffClollision2D" to="StateMachine/Ground" method="_on_cliff_clollision_2d_area_exited"]

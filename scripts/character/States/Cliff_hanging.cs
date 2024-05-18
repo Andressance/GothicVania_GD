@@ -25,7 +25,6 @@ public partial class Cliff_hanging : State
 
     private Vector2 direction;
 
-    private bool isClimbing = false;
 
     private int animFrameCount = 0; // Contador para el número de ejecuciones del temporizador
 
@@ -33,6 +32,7 @@ public partial class Cliff_hanging : State
     public override void _Ready()
     {
         this.canMove = false; // Desactivar el movimiento mientras está colgado
+        isClimbing = false; // Variable para saber si el personaje está trepando
         // Mantener al personaje estático mientras está colgado
         tempAnim = new Timer();
         AddChild(tempAnim);
@@ -44,11 +44,13 @@ public partial class Cliff_hanging : State
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
+        
         // Establecer la dirección del personaje independientemente de si está tratando de moverse horizontalmente
         direction = Input.GetVector("left", "right", "up", "down");
         // Establecer la dirección del personaje solo si no está en el proceso de trepar
         if (!isClimbing)
         {
+            
             if (direction.X > 0)
             {
                 x_move = 15;
@@ -93,11 +95,11 @@ public partial class Cliff_hanging : State
 
     public override void on_enter()
     {
-        // Detener la animación de movimiento al colgarse del acantilado
-        if (!isHanging)
-        {
+        if (!isClimbing) {
             playback.Travel("corner_grab");
             isHanging = true;
+        } else {
+            playback.Travel("climb");
         }
     }
 
@@ -124,9 +126,10 @@ public partial class Cliff_hanging : State
         // Incrementar el contador de frames
         animFrameCount++;
 
-        // Si el contador de frames es menor que 4, reiniciar el temporizador
-        if (animFrameCount < 4)
-        {
+        if (animFrameCount == 1) {
+            character.Position = new Vector2(character.Position.X, character.Position.Y- 7);
+            tempAnim.Start();
+        } else if (animFrameCount < 4) {
             tempAnim.Start();
         }
         else
@@ -139,4 +142,6 @@ public partial class Cliff_hanging : State
 
         }
     }
+
+    
 }

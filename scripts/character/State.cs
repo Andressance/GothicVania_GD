@@ -4,7 +4,7 @@ using System;
 public abstract partial class State : Node
 {
 
-	[Export]
+	[Export]	
 	public bool canMove = true;
 
 	[Export]
@@ -20,6 +20,11 @@ public abstract partial class State : Node
 
 	public Area2D cliffCollisionShape;
 
+	public bool isClimbing;
+
+	public bool isSliding;
+
+	public bool isArmed;
 	
 
 	// Called when the node enters the scene tree for the first time.

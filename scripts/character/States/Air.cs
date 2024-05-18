@@ -52,7 +52,6 @@ public partial class Air : State
 			playback.Travel("Movement");
 		}
 		if (next_state == Cliff_hanging) {
-			playback.Stop();
 			playback.Travel("corner_grab");
 		}
 
@@ -79,13 +78,6 @@ public partial class Air : State
 		
 	}
 
-	public void _on_cliff_clollision_2d_area_exited(Area2D area)
-	{
-		if (area.IsInGroup("cliff") && !character.IsOnFloor()) {
-			next_state = ground_state;
-		} else if (area.IsInGroup("cliff") && character.IsOnFloor()) {
-			next_state = ground_state;
-		}
-    }
+
 
 }
