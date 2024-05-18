@@ -1685,18 +1685,20 @@ position_smoothing_enabled = true
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
 
-[node name="Cliff" parent="." instance=ExtResource("4_62kk0")]
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="Cliff" parent="StaticBody2D" instance=ExtResource("4_62kk0")]
 position = Vector2(570, 107)
 scale = Vector2(0.98756, 1.00907)
 
-[node name="Cliff2" parent="." instance=ExtResource("4_62kk0")]
+[node name="Cliff2" parent="StaticBody2D" instance=ExtResource("4_62kk0")]
 position = Vector2(42, 120)
 
-[node name="Cliff3" parent="." instance=ExtResource("4_62kk0")]
+[node name="Cliff3" parent="StaticBody2D" instance=ExtResource("4_62kk0")]
 position = Vector2(443, 199)
 
-[node name="Cliff4" parent="." instance=ExtResource("4_62kk0")]
+[node name="Cliff4" parent="StaticBody2D" instance=ExtResource("4_62kk0")]
 position = Vector2(570, 216)
 
-[node name="Cliff5" parent="." instance=ExtResource("4_62kk0")]
+[node name="Cliff5" parent="StaticBody2D" instance=ExtResource("4_62kk0")]
 position = Vector2(699, 185)

@@ -55,17 +55,7 @@ public partial class character : CharacterBody2D
             }
             else if (StateMachine.currentState.isSliding)
             {
-                if (IsOnFloor())
-                {
-                    // Sliding on the floor
-                    velocity.X = slideSpeed;
-                }
-                else
-                {
-                    // Sliding in the air
-                    velocity.X = direction.X * Speed;
-                    StateMachine.currentState.isSliding = false;
-                }
+                velocity.X = slideSpeed;
             }
             else
             {
@@ -95,7 +85,6 @@ public partial class character : CharacterBody2D
         UpdateAnimation();
         UpdateFacingAnimation();
 
-        GD.Print(StateMachine.currentState.isSliding);
     }
 
     public void UpdateFacingAnimation()
