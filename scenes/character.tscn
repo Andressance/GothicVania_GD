@@ -1,4 +1,4 @@
-[gd_scene load_steps=204 format=3 uid="uid://bg36u85wh6uw8"]
+[gd_scene load_steps=205 format=3 uid="uid://bg36u85wh6uw8"]
 
 [ext_resource type="Script" path="res://scripts/character/character.cs" id="1_2ref0"]
 [ext_resource type="Texture2D" uid="uid://dxsbuuulad6vl" path="res://sprites/Adventurer-1.5/adventurer-v1.5-Sheet.png" id="1_ss1kd"]
@@ -91,6 +91,7 @@
 [ext_resource type="Script" path="res://scripts/character/States/Cliff_hanging.cs" id="89_ekjab"]
 [ext_resource type="Script" path="res://scripts/character/StateDebugLabel.cs" id="89_u70sy"]
 [ext_resource type="Script" path="res://scripts/character/HangingCliffCollision.cs" id="90_rbwpb"]
+[ext_resource type="Script" path="res://scripts/character/sword.cs" id="92_is46q"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bhdpa"]
 atlas = ExtResource("1_ss1kd")
@@ -915,7 +916,7 @@ position = Vector2(0, 3)
 shape = SubResource("CapsuleShape2D_o3q21")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("4_ar3h2")
+texture = ExtResource("3_y8wgw")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_dx8t8")
@@ -980,6 +981,8 @@ shape = SubResource("CircleShape2D_02ene")
 script = ExtResource("90_rbwpb")
 
 [node name="AttackCollision2D" type="Area2D" parent="."]
+monitoring = false
+script = ExtResource("92_is46q")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackCollision2D"]
 position = Vector2(14, 2.5)
@@ -990,3 +993,4 @@ shape = SubResource("RectangleShape2D_w882b")
 [connection signal="area_entered" from="CliffClollision2D" to="StateMachine/Air" method="_on_cliff_clollision_2d_area_entered"]
 [connection signal="area_exited" from="CliffClollision2D" to="StateMachine/Ground" method="_on_cliff_clollision_2d_area_exited"]
 [connection signal="area_exited" from="CliffClollision2D" to="StateMachine/Air" method="_on_cliff_clollision_2d_area_exited"]
+[connection signal="body_entered" from="AttackCollision2D" to="AttackCollision2D" method="_on_body_entered"]

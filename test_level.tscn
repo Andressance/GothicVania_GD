@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://d0u6npop2p8jj"]
+[gd_scene load_steps=9 format=3 uid="uid://d0u6npop2p8jj"]
 
 [ext_resource type="Texture2D" uid="uid://yx1qi5wotgvh" path="res://sprites/gothicvania_patreon_collection(1)/ gothicvania patreon collection/Gothic-Castle-Files/PNG/layers/gothic-castle-tileset.png" id="1_1lvrb"]
 [ext_resource type="PackedScene" uid="uid://bg36u85wh6uw8" path="res://scenes/character.tscn" id="1_hg6a8"]
 [ext_resource type="Texture2D" uid="uid://dqac6ietspcwy" path="res://sprites/Legacy-Fantasy - High Forest 2.0/Legacy-Fantasy - High Forest 2.3/Assets/Tiles.png" id="2_fi4lq"]
 [ext_resource type="PackedScene" uid="uid://dw83cx0avaykk" path="res://scenes/cliff.tscn" id="4_62kk0"]
+[ext_resource type="PackedScene" uid="uid://b4o2ssr1nkp0x" path="res://scenes/enemies/snail.tscn" id="5_vbgjk"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i5akk"]
 texture = ExtResource("1_1lvrb")
@@ -1685,20 +1686,23 @@ position_smoothing_enabled = true
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="CliffsContainer" type="Node2D" parent="."]
 
-[node name="Cliff" parent="StaticBody2D" instance=ExtResource("4_62kk0")]
+[node name="Cliff" parent="CliffsContainer" instance=ExtResource("4_62kk0")]
 position = Vector2(570, 107)
 scale = Vector2(0.98756, 1.00907)
 
-[node name="Cliff2" parent="StaticBody2D" instance=ExtResource("4_62kk0")]
+[node name="Cliff2" parent="CliffsContainer" instance=ExtResource("4_62kk0")]
 position = Vector2(42, 120)
 
-[node name="Cliff3" parent="StaticBody2D" instance=ExtResource("4_62kk0")]
+[node name="Cliff3" parent="CliffsContainer" instance=ExtResource("4_62kk0")]
 position = Vector2(443, 199)
 
-[node name="Cliff4" parent="StaticBody2D" instance=ExtResource("4_62kk0")]
+[node name="Cliff4" parent="CliffsContainer" instance=ExtResource("4_62kk0")]
 position = Vector2(570, 216)
 
-[node name="Cliff5" parent="StaticBody2D" instance=ExtResource("4_62kk0")]
+[node name="Cliff5" parent="CliffsContainer" instance=ExtResource("4_62kk0")]
 position = Vector2(699, 185)
+
+[node name="snail" parent="." instance=ExtResource("5_vbgjk")]
+position = Vector2(244, 96)
