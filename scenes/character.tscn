@@ -917,7 +917,7 @@ position = Vector2(0, 3)
 shape = SubResource("CapsuleShape2D_o3q21")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("3_y8wgw")
+texture = ExtResource("4_ar3h2")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_dx8t8")
