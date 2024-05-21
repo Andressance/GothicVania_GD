@@ -26,6 +26,10 @@ public partial class Damageable : Node
         }
     }
 
+    [Signal]
+	public delegate void OnTakeDamageEventHandler(int damage);
+
+
     public override void _Ready()
     {
     }
@@ -36,6 +40,9 @@ public partial class Damageable : Node
 
     public void TakeDamage(int damage)
     {
+
+        EmitSignal("OnTakeDamageEventHandler", GetParent() ,damage);
+
         Health -= damage;
         if (Health <= 0)
         {
