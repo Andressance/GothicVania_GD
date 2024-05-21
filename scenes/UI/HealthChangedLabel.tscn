@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://3aaq5frj56i3"]
+
+[node name="HealthChangedLabel" type="Label"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "1000"

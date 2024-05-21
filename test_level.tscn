@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://d0u6npop2p8jj"]
+[gd_scene load_steps=10 format=3 uid="uid://d0u6npop2p8jj"]
 
 [ext_resource type="Texture2D" uid="uid://yx1qi5wotgvh" path="res://sprites/gothicvania_patreon_collection(1)/ gothicvania patreon collection/Gothic-Castle-Files/PNG/layers/gothic-castle-tileset.png" id="1_1lvrb"]
 [ext_resource type="PackedScene" uid="uid://bg36u85wh6uw8" path="res://scenes/character.tscn" id="1_hg6a8"]
 [ext_resource type="Texture2D" uid="uid://dqac6ietspcwy" path="res://sprites/Legacy-Fantasy - High Forest 2.0/Legacy-Fantasy - High Forest 2.3/Assets/Tiles.png" id="2_fi4lq"]
 [ext_resource type="PackedScene" uid="uid://dw83cx0avaykk" path="res://scenes/cliff.tscn" id="4_62kk0"]
 [ext_resource type="PackedScene" uid="uid://b4o2ssr1nkp0x" path="res://scenes/enemies/snail.tscn" id="5_vbgjk"]
+[ext_resource type="PackedScene" uid="uid://bnyw8orsknxy3" path="res://scenes/UI/health_changed_manager.tscn" id="6_4v73j"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i5akk"]
 texture = ExtResource("1_1lvrb")
@@ -1706,3 +1707,5 @@ position = Vector2(699, 185)
 
 [node name="snail" parent="." instance=ExtResource("5_vbgjk")]
 position = Vector2(244, 96)
+
+[node name="HealthChangedManager" parent="." instance=ExtResource("6_4v73j")]
