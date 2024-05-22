@@ -6,29 +6,39 @@ public partial class health_changed_manager : Control
     [Export]
     public PackedScene health_changed_label;
 
+    private signal_bus signal_bus;
+
     public override void _Ready()
     {
-        var signalBus = GetNodeOrNull("/root/SignalBus");
-        if (signalBus != null)
+        signal_bus = GetNode<signal_bus>("/root/signal_bus");
+
+        if (signal_bus != null)
         {
-            GD.Print("SignalBus encontrado." + signalBus);
-            signalBus.Connect("OnHealthChangedEventHandler", new Callable(this, "on_signal_health_changed"));
+            // Conecta la señal al método local
+            signal_bus.Connect("OnHealthChanged", new Callable(this, "on_signal_health_changed"));
         }
         else
         {
-            GD.PushWarning("SignalBus no encontrado.");
+            GD.PrintErr("No se encontró el nodo SignalBus");
         }
-    }
-
-    public override void _Process(double delta)
-    {
     }
 
     public void on_signal_health_changed(Node node, int amount)
     {
-        Label label_instance = (Label)health_changed_label.Instantiate();
+        GD.Print("Health changed: " + amount);
+        
+        var label_instance = health_changed_label.Instantiate();
         node.AddChild(label_instance);
-        label_instance.Text = amount.ToString();
-        GD.Print("on_signal_health_changed: " + amount);
+        // Get the label node and set the text
+        for (int i = 0; i < node.GetChildCount(); i++)
+        {
+            if (node.GetChild(i) is Label)
+            {
+                (label_instance as Label).Text = amount.ToString();
+            }
+        }
+
+
+        
     }
 }

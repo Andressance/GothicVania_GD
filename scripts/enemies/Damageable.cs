@@ -3,35 +3,36 @@ using System;
 
 public partial class Damageable : Node
 {
+    private signal_bus signal_bus;
+
     private int _health = 20;
 
     [Export]
     public int Health
     {
-        get { return _health; }
+        get
+        {
+            return _health;
+        }
         set
         {
-            var signalBus = (signal_bus)GetNode("/root/SignalBus");
-            if (signalBus != null)
-            {
-                signalBus.EmitHealthChanged(this, value - _health);
-            }
-            else
-            {
-                GD.PrintErr("SignalBus no encontrado.");
-            }
+            // Validamos que la vida no sea negativa
+            if (value < 0) value = 0;
 
-            int oldHealth = _health;
-            _health = value;
+            // Solo emitimos la señal si hay un cambio en el valor de Health
+            if (_health != value)
+            {
+                _health = value;
+                signal_bus.EmitSignal("OnHealthChanged", GetParent(), _health);
+				
+            }
         }
     }
 
-    [Signal]
-	public delegate void OnTakeDamageEventHandler(int damage);
-
-
     public override void _Ready()
     {
+        signal_bus = GetNode<signal_bus>("/root/signal_bus");
+        Health = _health;  // Aseguramos que se llame al setter para emitir la señal inicial
     }
 
     public override void _Process(double delta)
@@ -40,9 +41,6 @@ public partial class Damageable : Node
 
     public void TakeDamage(int damage)
     {
-
-        EmitSignal("OnTakeDamageEventHandler", GetParent() ,damage);
-
         Health -= damage;
         if (Health <= 0)
         {

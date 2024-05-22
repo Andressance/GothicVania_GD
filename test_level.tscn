@@ -1705,7 +1705,7 @@ position = Vector2(570, 216)
 [node name="Cliff5" parent="CliffsContainer" instance=ExtResource("4_62kk0")]
 position = Vector2(699, 185)
 
-[node name="snail" parent="." instance=ExtResource("5_vbgjk")]
-position = Vector2(244, 96)
-
 [node name="HealthChangedManager" parent="." instance=ExtResource("6_4v73j")]
+
+[node name="snail" parent="." instance=ExtResource("5_vbgjk")]
+position = Vector2(228, 94)

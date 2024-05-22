@@ -4,6 +4,10 @@ using System;
 public partial class sword : Area2D
 {
 	// Called when the node enters the scene tree for the first time.
+
+	[Export]
+	public int damage = 10;
+
 	public override void _Ready()
 	{
 		Monitoring = false;
@@ -22,7 +26,7 @@ public partial class sword : Area2D
 		{
 			if (ChildEnteredTree is Damageable)
 			{
-				(ChildEnteredTree as Damageable).TakeDamage(10);
+				(ChildEnteredTree as Damageable).TakeDamage(damage);
 			}
 		}
 	}

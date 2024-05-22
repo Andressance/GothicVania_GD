@@ -1,13 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://b4o2ssr1nkp0x"]
+[gd_scene load_steps=17 format=3 uid="uid://b4o2ssr1nkp0x"]
 
 [ext_resource type="Script" path="res://scripts/enemies/snail/snail.cs" id="1_3feyc"]
 [ext_resource type="Texture2D" uid="uid://caih3bcq3me17" path="res://sprites/Legacy-Fantasy - High Forest 2.0/Legacy-Fantasy - High Forest 2.3/Mob/Snail/Dead-Sheet.png" id="1_x5i1b"]
 [ext_resource type="Texture2D" uid="uid://cfhy8umd6ilpw" path="res://sprites/Legacy-Fantasy - High Forest 2.0/Legacy-Fantasy - High Forest 2.3/Mob/Snail/walk-Sheet.png" id="1_ya45n"]
 [ext_resource type="Script" path="res://scripts/enemies/Damageable.cs" id="2_8ucdo"]
-[ext_resource type="Script" path="res://scripts/enemies/snail/StateMachineSnail.cs" id="4_h8ksm"]
-[ext_resource type="Script" path="res://scripts/enemies/snail/Walk.cs" id="5_a7yk3"]
-[ext_resource type="Script" path="res://scripts/enemies/snail/Die.cs" id="6_lj2ao"]
-[ext_resource type="Script" path="res://scripts/enemies/snail/Hit.cs" id="7_dxlcm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xh4u2"]
 size = Vector2(28, 22)
@@ -177,10 +173,8 @@ states/walk/position = Vector2(371, 100)
 transitions = ["Start", "walk", SubResource("AnimationNodeStateMachineTransition_qmudj"), "walk", "die", SubResource("AnimationNodeStateMachineTransition_xb3vl"), "die", "End", SubResource("AnimationNodeStateMachineTransition_lijbr")]
 graph_offset = Vector2(-27, -62)
 
-[node name="snail" type="CharacterBody2D" node_paths=PackedStringArray("initialState", "stateMachine")]
+[node name="snail" type="CharacterBody2D"]
 script = ExtResource("1_3feyc")
-initialState = NodePath("StateMachine/Walk")
-stateMachine = NodePath("StateMachine")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 5)
@@ -202,18 +196,10 @@ anim_player = NodePath("../AnimationPlayer")
 [node name="Damageable" type="Node" parent="."]
 script = ExtResource("2_8ucdo")
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("currentState", "animationTree", "animationPlayer")]
-script = ExtResource("4_h8ksm")
-currentState = NodePath("Walk")
-animationTree = NodePath("../AnimationTree")
-animationPlayer = NodePath("../AnimationPlayer")
+[node name="StateMachine" type="Node" parent="."]
 
 [node name="Walk" type="Node" parent="StateMachine"]
-script = ExtResource("5_a7yk3")
 
 [node name="Die" type="Node" parent="StateMachine"]
-script = ExtResource("6_lj2ao")
 
-[node name="Hit" type="Node" parent="StateMachine" node_paths=PackedStringArray("damageable")]
-script = ExtResource("7_dxlcm")
-damageable = NodePath("../../Damageable")
+[node name="Hit" type="Node" parent="StateMachine"]

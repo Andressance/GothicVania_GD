@@ -1,56 +1,13 @@
 using Godot;
-using Godot.Collections;
 using System;
 
-public partial class snail : CharacterBody2D
-{
-	[Export]
-	public State initialState;
+public partial class snail : CharacterBody2D {
 
-	[Export]
-	public StateMachineSnail stateMachine;
-
-	[Export]
-	public const float Speed = -20.0f;
-
-
-
-	// Get the gravity from the project settings to be synced with RigidBody nodes.
-	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
-
-    public override void _Ready()
-    {
-		stateMachine = GetNode<StateMachineSnail>("StateMachine");	
-		stateMachine.currentState = initialState;
-
+    private signal_bus signal_bus;
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready() {
+        
+        signal_bus = GetNode<signal_bus>("/root/signal_bus");
     }
 
-    public override void _PhysicsProcess(double delta)
-	{
-		Vector2 velocity = Velocity;
-
-		// Apply gravity if not on the floor
-		if (!IsOnFloor())
-		{
-			velocity.Y += gravity * (float)delta;
-		}
-
-		if (this.stateMachine.currentState is Walk) {
-			velocity.X = Speed;
-		}
-
-		GD.Print("Current state: ", stateMachine.currentState);
-		GD.Print("Velocity: ", velocity);
-		GD.Print("IsOnFloor: ", IsOnFloor());
-
-
-		
-
-		
-	
-		
-
-		Velocity = velocity;
-		MoveAndSlide();
-	}
 }
