@@ -151,11 +151,13 @@ public partial class Ground : State
         {
             isArmed = true;
             playback.Travel("draw_sword");
+            GD.Print("Draw sword");
         }
         else if (canAttack)
         {
             // No te puedes mover mientras atacas
             canMove = false;
+            isAttacking = true;
 
             // Realizar lógica de ataque
             // Reiniciar el temporizador de ataque
@@ -166,12 +168,15 @@ public partial class Ground : State
             switch (attackCount)
             {
                 case 0:
+                    GD.Print("Attack 1");
                     playback.Travel("attack_1");
                     break;
                 case 1:
+                    GD.Print("Attack 2");
                     playback.Travel("attack_2");
                     break;
                 case 2:
+                    GD.Print("Attack 3");
                     playback.Travel("attack_3");
                     break;
             }
@@ -197,6 +202,7 @@ public partial class Ground : State
         canMove = true;
         playback.Travel("Movement_sword");
         canAttack = true;
+        isAttacking = false;
     }
 
     public void CanAttack()
@@ -238,6 +244,24 @@ public partial class Ground : State
     public override void on_exit()
     {
         isSliding = false;
+        isAttacking = false;
+    }
+
+    public override void on_enter()
+    {
+        isSliding = false;
+        isAttacking = false;
+
+        
+
+        if (isArmed)
+        {
+            playback.Travel("Movement_sword");
+        }
+        else
+        {
+            playback.Travel("Movement");
+        }
     }
 
 }

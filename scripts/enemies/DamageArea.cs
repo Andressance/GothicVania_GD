@@ -1,17 +1,11 @@
 using Godot;
 using System;
 
-public partial class sword : Area2D
+public partial class DamageArea : Area2D
 {
 	// Called when the node enters the scene tree for the first time.
-
-	[Export]
-	public int damage = 10;
-
 	public override void _Ready()
 	{
-		Monitoring = false;
-		
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -19,14 +13,14 @@ public partial class sword : Area2D
 	{
 	}
 
-	public void _on_body_entered(CharacterBody2D body)
-	{	
-		// Esta monitorizando
+	public void _on_body_entered(Node body)
+	{
 		foreach (Node ChildEnteredTree in body.GetChildren())
 		{
 			if (ChildEnteredTree is Damageable)
 			{
-				(ChildEnteredTree as Damageable).TakeDamage(damage);				
+				GD.Print("Body " + body.Name + " entered DamageArea");
+				(ChildEnteredTree as Damageable).TakeDamage(10);				
 			}
 		}
 	}

@@ -24,7 +24,16 @@ public abstract partial class State : Node
 
 	public bool isSliding;
 
+	public bool isAttacking;
+
 	public bool isArmed;
+
+	public bool facingRight;
+
+	/*******************************SIGNALS**********************************************/
+
+	[Signal]
+	public delegate void InterruptStateEventHandler(State state);
 	
 
 	// Called when the node enters the scene tree for the first time.

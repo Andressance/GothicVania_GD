@@ -1,9 +1,14 @@
-[gd_scene load_steps=17 format=3 uid="uid://b4o2ssr1nkp0x"]
+[gd_scene load_steps=24 format=3 uid="uid://b4o2ssr1nkp0x"]
 
 [ext_resource type="Script" path="res://scripts/enemies/snail/snail.cs" id="1_3feyc"]
 [ext_resource type="Texture2D" uid="uid://caih3bcq3me17" path="res://sprites/Legacy-Fantasy - High Forest 2.0/Legacy-Fantasy - High Forest 2.3/Mob/Snail/Dead-Sheet.png" id="1_x5i1b"]
 [ext_resource type="Texture2D" uid="uid://cfhy8umd6ilpw" path="res://sprites/Legacy-Fantasy - High Forest 2.0/Legacy-Fantasy - High Forest 2.3/Mob/Snail/walk-Sheet.png" id="1_ya45n"]
 [ext_resource type="Script" path="res://scripts/enemies/Damageable.cs" id="2_8ucdo"]
+[ext_resource type="Script" path="res://scripts/enemies/snail/states/WalkSnailState.cs" id="5_ac4cn"]
+[ext_resource type="Script" path="res://scripts/StateMachine.cs" id="5_p224c"]
+[ext_resource type="Script" path="res://scripts/enemies/snail/states/DieSnailState.cs" id="7_8wsje"]
+[ext_resource type="Script" path="res://scripts/enemies/snail/states/HitSnailState.cs" id="8_kr6wm"]
+[ext_resource type="Script" path="res://scripts/enemies/DamageArea.cs" id="9_k4hnl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xh4u2"]
 size = Vector2(28, 22)
@@ -162,19 +167,31 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xb3vl"]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lijbr"]
-advance_mode = 2
-
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_pf6ca"]
 states/die/node = SubResource("AnimationNodeAnimation_qh447")
 states/die/position = Vector2(567, 89)
 states/walk/node = SubResource("AnimationNodeAnimation_gcddq")
 states/walk/position = Vector2(371, 100)
-transitions = ["Start", "walk", SubResource("AnimationNodeStateMachineTransition_qmudj"), "walk", "die", SubResource("AnimationNodeStateMachineTransition_xb3vl"), "die", "End", SubResource("AnimationNodeStateMachineTransition_lijbr")]
+transitions = ["Start", "walk", SubResource("AnimationNodeStateMachineTransition_qmudj"), "walk", "die", SubResource("AnimationNodeStateMachineTransition_xb3vl")]
 graph_offset = Vector2(-27, -62)
 
-[node name="snail" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_nspsd"]
+radius = 3.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_boj5j"]
+size = Vector2(3, 22)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_auau5"]
+size = Vector2(27, 2)
+
+[node name="snail" type="CharacterBody2D" node_paths=PackedStringArray("animationTree", "stateMachine", "hit_state", "sprite", "cliffCollisionShape")]
+collision_layer = 4
 script = ExtResource("1_3feyc")
+animationTree = NodePath("AnimationTree")
+stateMachine = NodePath("StateMachine")
+hit_state = NodePath("StateMachine/Hit")
+sprite = NodePath("Sprite2D")
+cliffCollisionShape = NodePath("cliffArea")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 5)
@@ -195,11 +212,63 @@ anim_player = NodePath("../AnimationPlayer")
 
 [node name="Damageable" type="Node" parent="."]
 script = ExtResource("2_8ucdo")
+Health = 10
 
-[node name="StateMachine" type="Node" parent="."]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("currentState", "character", "animationTree", "animationPlayer")]
+script = ExtResource("5_p224c")
+currentState = NodePath("Walk")
+character = NodePath("..")
+animationTree = NodePath("../AnimationTree")
+animationPlayer = NodePath("../AnimationPlayer")
 
 [node name="Walk" type="Node" parent="StateMachine"]
+script = ExtResource("5_ac4cn")
+canTurn = true
 
 [node name="Die" type="Node" parent="StateMachine"]
+script = ExtResource("7_8wsje")
 
-[node name="Hit" type="Node" parent="StateMachine"]
+[node name="Hit" type="Node" parent="StateMachine" node_paths=PackedStringArray("damageable", "state_machine", "walk_state", "dead_state", "timer")]
+script = ExtResource("8_kr6wm")
+damageable = NodePath("../../Damageable")
+state_machine = NodePath("..")
+walk_state = NodePath("../Walk")
+dead_state = NodePath("../Die")
+timer = NodePath("Timer")
+canTurn = true
+
+[node name="Timer" type="Timer" parent="StateMachine/Hit"]
+process_callback = 0
+wait_time = 0.2
+one_shot = true
+
+[node name="cliffArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="cliffArea"]
+position = Vector2(-21, 16)
+shape = SubResource("CircleShape2D_nspsd")
+
+[node name="DamageArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("9_k4hnl")
+
+[node name="LeftDamageCollision" type="CollisionShape2D" parent="DamageArea"]
+position = Vector2(14, 5)
+shape = SubResource("RectangleShape2D_boj5j")
+debug_color = Color(0.810402, 0, 0.154776, 0.42)
+
+[node name="RightDamageCollision" type="CollisionShape2D" parent="DamageArea"]
+position = Vector2(-15.5, 5)
+shape = SubResource("RectangleShape2D_boj5j")
+debug_color = Color(0.810402, 0, 0.154776, 0.42)
+
+[node name="TopDamageCollision" type="CollisionShape2D" parent="DamageArea"]
+position = Vector2(-1, -7)
+shape = SubResource("RectangleShape2D_auau5")
+debug_color = Color(0.844117, 0, 0.174361, 0.42)
+
+[connection signal="animation_finished" from="AnimationTree" to="Damageable" method="_on_animation_tree_animation_finished"]
+[connection signal="timeout" from="StateMachine/Hit/Timer" to="StateMachine/Hit" method="_on_timer_timeout"]
+[connection signal="area_entered" from="cliffArea" to="StateMachine/Walk" method="_on_cliff_area_area_entered"]
+[connection signal="body_entered" from="DamageArea" to="DamageArea" method="_on_body_entered"]

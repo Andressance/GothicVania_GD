@@ -5,6 +5,9 @@ public partial class character : CharacterBody2D
 {
     [Export]
     public float Speed = 200.0f;
+
+    [Export]
+    public State HitState;
     public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").As<float>();
     public bool hasDoubleJumped = true;
     public bool was_in_air = false;
@@ -16,6 +19,8 @@ public partial class character : CharacterBody2D
     private Area2D cliffCollisionShape;
     private Area2D attackCollisionShape;
     private float slideSpeed = 400.0f;
+
+    public bool facingRight = true;
 
     public override void _Ready()
     {
@@ -29,9 +34,11 @@ public partial class character : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
+        this.StateMachine.currentState.facingRight = facingRight;
+
         Vector2 velocity = Velocity;
 
-        // Apply gravity if not on the floor
+        // Aplicar gravedad si no está en el suelo
         if (!IsOnFloor() && StateMachine.check_if_it_can_move())
         {
             velocity.Y += gravity * (float)delta;
@@ -42,15 +49,15 @@ public partial class character : CharacterBody2D
             velocity.Y = 0;
         }
 
-        // Get input direction
+        // Obtener la dirección de entrada
         direction = Input.GetVector("left", "right", "up", "down");
 
-        // Handle horizontal movement
-        if (StateMachine.check_if_it_can_move())
+        // Manejar el movimiento horizontal
+        if (StateMachine.currentState.canMove && !StateMachine.currentState.isAttacking && StateMachine.currentState != HitState)
         {
             if (direction.X != 0 && !StateMachine.currentState.isSliding)
             {
-                // Normal movement
+                // Movimiento normal
                 velocity.X = direction.X * Speed;
             }
             else if (StateMachine.currentState.isSliding)
@@ -62,30 +69,35 @@ public partial class character : CharacterBody2D
                 velocity.X = 0;
             }
         }
+        else
+        {
+            // Detener el movimiento horizontal durante el ataque
+            velocity.X = 0;
+        }
 
-        // Stop sliding when falling
+        // Detener deslizamiento cuando está cayendo
         if (!IsOnFloor() && StateMachine.currentState.isSliding)
         {
             StateMachine.currentState.isSliding = false;
             velocity.X = direction.X * Speed;
         }
 
-        // Reset sliding state when landing
+        // Restablecer el estado de deslizamiento al aterrizar
         if (IsOnFloor() && was_in_air)
         {
             was_in_air = false;
             StateMachine.currentState.isSliding = false;
         }
 
-        // Set the new velocity
+        // Establecer la nueva velocidad
         Velocity = velocity;
         MoveAndSlide();
 
-        // Update animations
+        // Actualizar animaciones
         UpdateAnimation();
         UpdateFacingAnimation();
-
     }
+
 
     public void UpdateFacingAnimation()
     {
@@ -95,6 +107,7 @@ public partial class character : CharacterBody2D
             cliffCollisionShape.Position = new Vector2(-20, 0);
             attackCollisionShape.Position = new Vector2(-30, 0);
             slideSpeed = -400.0f;
+            facingRight = false;
         }
         else if (direction.X > 0 && StateMachine.check_if_it_can_turn())
         {
@@ -102,6 +115,7 @@ public partial class character : CharacterBody2D
             cliffCollisionShape.Position = new Vector2(0, 0);
             attackCollisionShape.Position = new Vector2(0, 0);
             slideSpeed = 400.0f;
+            facingRight = true;
         }
     }
 
@@ -110,4 +124,5 @@ public partial class character : CharacterBody2D
         animationTree.Set("parameters/Movement/blend_position", direction.X);
         animationTree.Set("parameters/Movement_sword/blend_position", direction.X);
     }
+
 }

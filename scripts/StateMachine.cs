@@ -56,6 +56,8 @@ public partial class StateMachine : Node
 		}
 
 		playback = (AnimationNodeStateMachinePlayback) animationTree.Get("parameters/playback");
+
+		
 		
 		
 		// We set the character to the states
@@ -70,6 +72,8 @@ public partial class StateMachine : Node
 				GetChild<State>(i).animationPlayer = animationPlayer;
 				GetChild<State>(i).cliffCollisionShape = cliffCollisionShape;
 				GetChild<State>(i).SetCliffCollisionShape(cliffCollisionShape);
+
+				GetChild<State>(i).Connect("InterruptState", new Callable(this, "on_state_interrupted"));
 
 			} else { 
 				GD.PushWarning("Child" + GetChild(i).Name + " is not a State");
@@ -93,7 +97,6 @@ public partial class StateMachine : Node
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _PhysicsProcess(double delta)
     {
-		
         if (currentState != null) {
 			switch_states(currentState.next_state);
 		}
@@ -121,5 +124,9 @@ public partial class StateMachine : Node
 		currentState.state_input(@event);
 	}
 
-	
+
+	public void on_state_interrupted(State state)
+	{
+		switch_states(state);
+	}	
 }
